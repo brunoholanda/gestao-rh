@@ -1,0 +1,80 @@
+.sidebar {
+    width: 250px; 
+    background-color: #f4f4f4; 
+    height: 100%; 
+  }
+
+  .demo-logo-vertical {
+    display: flex;
+    justify-content: center;
+    margin: 18px 0 5px 0;
+  }
+  
+  .demo-logo-vertical img {
+    width: 150px;
+  }
+  
+  .demo-logo-vertical img.collapsed {
+    width: 35px;
+    margin-bottom: 5px;
+  }
+  .sidebar-list {
+    list-style: none; 
+    padding: 0;
+    margin: 0;
+  }
+  
+  .sidebar-list-item {
+    display: flex;
+    align-items: center; 
+    padding: 10px; 
+  }
+  
+  .icon {
+    margin-right: 10px; 
+    display: block;
+    width: 24px; 
+    text-align: center; 
+  }
+  
+  .text {
+    display: none; 
+  }
+  
+  
+.custom-menu .anticon {
+  margin-right: 10px;
+}
+
+.ant-menu-dark .ant-menu-item-selected {
+  background-color: var(--azul) !important;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 40px; /* Reduz a largura da sidebar para dispositivos móveis */
+  }
+  .custom-menu {
+    width: 40px; 
+  }
+
+  .icon {
+    width: 16px;
+  }
+
+  .custom-menu {
+    width: 30px;
+  }
+
+  .ant-layout-sider {
+    width: 40px !important; /* Largura desejada para dispositivos móveis */
+    flex: 0 0 80px !important; /* Flex shorthand para 'flex-grow', 'flex-shrink' e 'flex-basis' */
+    max-width: 40px !important; /* Largura máxima para dispositivos móveis */
+    min-width: 40px !important; /* Largura mínima para dispositivos móveis */
+  }
+
+  .ant-layout-sider .anticon {
+    font-size: 18px !important; /* Reduzir o tamanho do ícone */
+  }
+
+}

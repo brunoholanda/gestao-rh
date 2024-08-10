@@ -1,0 +1,183 @@
+:root {
+  --fonte-principal: 'Poppins', sans-serif;
+  --fonte-secundaria: 'DM Sans', sans-serif;
+  --fonte-principal-teste: 'Roboto Condensed', sans-serif;
+  --fonte-principal-e: 'Open Sans', sans-serif;
+
+  --branco: #ffffff;
+  --preto: #000000;
+  --cinza-texto: #666666;
+  --preto-texto: #42446E;
+  --azul: #3f51b5;
+  --gold: #dec87f;
+  --gold-black: #ab7b3b;
+  --cor-de-fundo: #f4f7fb;
+  --azul-texto: #30455c;
+  --azul-forte: #02075d;
+}
+
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--fonte-secundaria);
+  background-color: #fff;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  
+  .tabela {
+    margin: 2rem 4rem;
+  }
+
+  .tabela h1,
+  h3 {
+    color: var(--cinza-texto);
+  }
+
+  .datePickerReset {
+    display: flex;
+    margin-bottom: 1rem;
+  }
+
+  .datePickerReset h3 {
+    margin: 0 2rem 0 0;
+  }
+
+  .modal-btn {
+    transition: 0.5s ease;
+    color: white !important;
+    margin: 1rem 1.3rem;
+  }
+
+  .modal-btn:hover {
+    transform: scale(1.05);
+  }
+
+  .button-orange {
+    background-color: #ff7f00;
+    border-color: #ff7f00;
+  }
+
+  .button-red {
+    background-color: white;
+    border-color: red !important;
+    color: red !important;
+  }
+
+  .button-red:hover {
+    background-color: white;
+    border-color: red;
+    color: red !important;
+  }
+
+  .button-orange:hover {
+    background-color: #ff9a33 !important;
+    border-color: #ff7f00 !important;
+  }
+
+  .button-green {
+    background-color: green;
+    border-color: green;
+  }
+
+  .button-green:hover {
+    background-color: green !important;
+    border-color: green !important;
+  }
+
+  .button-whats {
+    background-color: #25D366;
+    border-color: #25D366;
+  }
+
+  .btnhistory {
+    margin-left: 1rem;
+  }
+
+  .modalConfirm {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .desabilitar {
+    margin: 2rem 5rem;
+  }
+
+
+  .desabilitar h1,
+  h2 {
+    color: var(--cinza-texto);
+  }
+
+  .baloom {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .ant-modal-body::-webkit-scrollbar {
+    width: 5px;
+}
+
+.ant-modal-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.ant-modal-body::-webkit-scrollbar-thumb {
+    background: var(--azul); 
+    border-radius: 8px;
+}
+
+.ant-modal-body::-webkit-scrollbar-thumb:hover {
+    background: #1677ff;    
+}
+
+.ant-tabs-card.ant-tabs-top >.ant-tabs-nav .ant-tabs-tab-active {
+  border-bottom-color: var(--azul) !important;
+}
+
+.ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: var(--azul) !important;
+}
+
+  @media (max-width: 768px) {
+    .tabela {
+      margin: 2rem 1.5rem;
+    }
+
+    .tabela h1 {
+      font-size: 18px;
+      margin-top: 2rem;
+    }
+
+    .tabela p {
+      font-size: 12px;
+    }
+  }
+
+  .ant-btn-primary {
+    background-color: var(--azul);
+    color: var(--branco);
+    font-family: var(--fonte-secundaria);
+    font-weight: 500;
+    border: none;
+    font-size: 14px;
+    height: 32px;
+    padding: 4px 15px;
+    border-radius: 6px;
+  }
+  
+  .ant-btn-primary:hover {
+    background-color: #4e68fc !important;
+  }
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Open+Sans:wght@400;700&family=Poppins:wght@400;700&display=swap&font-display=swap');
