@@ -2,6 +2,8 @@ import { createContext, useState, useEffect, useContext, ReactNode } from 'react
 import api from '../Components/api/api';
 
 interface AuthData {
+    userName: string | null;
+    companyName: string | null;
     companyID: string | null;
     authToken: string | null;
     userType: string[];
@@ -14,6 +16,8 @@ interface AuthProviderProps {
 interface CompanyDetailsResponse {
     company_id: string;
     user_type: string[];
+    company_name: string;
+    user_name: string;
 }
 
 const AuthContext = createContext<{
@@ -27,6 +31,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         companyID: null,
         authToken: null,
         userType: [],
+        companyName: null,
+        userName: null,
     });
 
     useEffect(() => {
@@ -45,8 +51,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                 },
             });
             if (response.status >= 200 && response.status < 300) {
-                const { company_id, user_type } = response.data;
-                setAuthData({ authToken: token, companyID: company_id, userType: user_type });
+                const { company_id, user_type, company_name, user_name } = response.data;
+                setAuthData((prev) => ({
+                    ...prev,
+                    companyID: company_id,
+                    userType: user_type,
+                    companyName: company_name ? company_name.split(' ').slice(0, 2).join(' ') : null,  // Extrair os dois primeiros nomes
+                    userName: user_name ? user_name.split(' ').slice(0, 2).join(' ') : null,            // Extrair os dois primeiros nomes
+                }));
             } else if (response.status === 401) {
                 logout();
             } else {
@@ -60,10 +72,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const updateAuthData = (data: AuthData) => {
         setAuthData(data);
         sessionStorage.setItem('authToken', data.authToken || '');
+
+        // Chama fetchCompanyDetails para carregar os detalhes da empresa e do usuário
+        if (data.authToken) {
+            fetchCompanyDetails(data.authToken);
+        }
     };
 
     const logout = () => {
-        setAuthData({ authToken: null, companyID: null, userType: [] });
+        setAuthData({ authToken: null, companyID: null, userType: [], companyName: null, userName: null });
         sessionStorage.removeItem('authToken');
         window.location.href = '/#login';
     };

@@ -1,108 +1,45 @@
-import { Button, Table, Space, Popconfirm, notification } from "antd";
-import { useEffect, useState } from "react";
+import React from 'react';
+import { Avatar, Card } from 'antd';
 import * as S from './Styles';
-import api from "../../Components/api/api";
-import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
-import moment from "moment";
-import CadastroFuncionarioModal from "./Modals";
-import { Funcionario } from "../../types";
+import { Link } from 'react-router-dom';
 
-export default function Home() {
+const { Meta } = Card;
 
-  const [cadastrarFuncionarioOpen, setCadastrarFuncionarioOpen] = useState(false);
-  const [funcionarios, setFuncionarios] = useState<Funcionario[]>([]);
-  const [editingFuncionario, setEditingFuncionario] = useState<Funcionario | null>(null);
-
-  useEffect(() => {
-    fetchFuncionarios();
-  }, []);
-
-  const fetchFuncionarios = async () => {
-    try {
-      const { data } = await api.get<Funcionario[]>('/funcionarios');
-      setFuncionarios(data);
-    } catch (error) {
-      notification.error({
-        message: 'Erro ao buscar funcionários',
-        description: 'Não foi possível carregar os dados dos funcionários.',
-      });
-    }
-  };
-
-  const handleSaveFuncionario = (funcionario: Funcionario) => {
-    if (editingFuncionario) {
-      setFuncionarios(prev => prev.map(f => f.id === funcionario.id ? funcionario : f));
-    } else {
-      setFuncionarios(prev => [...prev, funcionario]);
-    }
-    setCadastrarFuncionarioOpen(false);
-    setEditingFuncionario(null);
-  };
-
-  const onEdit = (funcionario: Funcionario) => {
-    setEditingFuncionario(funcionario);
-    setCadastrarFuncionarioOpen(true);
-  };
-  
-
-  const onDelete = async (id: number) => {
-    try {
-      await api.delete(`/funcionarios/${id}`);
-      setFuncionarios(prev => prev.filter(f => f.id !== id));
-      notification.success({ message: 'Funcionário deletado com sucesso!' });
-    } catch (error) {
-      notification.error({ message: 'Erro ao deletar funcionário' });
-    }
-  };
-
-  const showCadastrarFuncionarioModal = () => {
-    setCadastrarFuncionarioOpen(true);
-    setEditingFuncionario(null);
-  };
-
-  const columns = [
-    { title: 'Nome', dataIndex: 'nome', key: 'nome' },
-    { title: 'Data de Nascimento', dataIndex: 'data_nascimento', key: 'data_nascimento', render: (date: string) => moment(date).format('DD/MM/YYYY') },
-    { title: 'Telefone', dataIndex: 'telefone', key: 'telefone' },
-    { title: 'CPF', dataIndex: 'cpf', key: 'cpf' },
-    { title: 'Estado Civil', dataIndex: 'estado_civil', key: 'estado_civil' },
-    { title: 'Cargo', dataIndex: 'cargo', key: 'cargo' },
-    { title: 'Formação Acadêmica', dataIndex: 'formacao_academica', key: 'formacao_academica' },
-    { title: 'Endereço', dataIndex: 'endereco', key: 'endereco' },
-    {
-      title: 'Ações',
-      key: 'actions',
-      render: (_: any, record: Funcionario) => (
-        <Space size="middle">
-          <Button type="primary" icon={<EditOutlined />} onClick={() => onEdit(record)}>Editar</Button>
-          <Popconfirm title="Tem certeza que deseja deletar?" onConfirm={() => onDelete(record.id)}>
-            <Button type="primary" icon={<DeleteOutlined />} danger>Excluir</Button>
-          </Popconfirm>
-        </Space>
-      ),
-    },
-  ];
-
-  return (
-    <div>
-      <S.StyledFuncionariosPage>
-        <h2>Cadastro de Funcionários</h2>
-        <Button type="primary" onClick={showCadastrarFuncionarioModal}>
-          <PlusOutlined /> Novo Funcionário
-        </Button>
-
-        <Table
-          columns={columns}
-          dataSource={funcionarios}
-          rowKey="id"
+const Home: React.FC = () => (
+  <S.Container>
+    <Link to="/funcionarios">
+      <S.CardItem>
+        <Meta
+          avatar={<Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=8" />}
+          title="Cadastro de Funcionários"
+          description="Aqui você pode adicionar funcionários ou editar dados dos funcionários já cadastrados. Um cadastro bem feito ajuda na gestão."
         />
-      </S.StyledFuncionariosPage>
-      <CadastroFuncionarioModal
-        open={cadastrarFuncionarioOpen}
-        onCancel={() => setCadastrarFuncionarioOpen(false)}
-        onSave={handleSaveFuncionario}
-        editingFuncionario={editingFuncionario}
+      </S.CardItem>
+    </Link>
+    <S.CardItem >
+      <Meta
+        avatar={<Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=9" />}
+        title="Registro de Ocorrências"
+        description="Nesta sessão você pode registrar ocorrências relativas a funcionários, tais como advertências, faltas, atestados médicos e mais."
       />
-    </div>
-  );
-}
+    </S.CardItem>
+
+    <S.CardItem onClick={() => console.log('Dados da Empresa')}>
+      <Meta
+        avatar={<Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=10" />}
+        title="Dados da Empresa"
+        description="Aqui você pode atualizar os dados da sua empresa, endereço, contato, razão social e mais."
+      />
+    </S.CardItem>
+
+    <S.CardItem onClick={() => console.log('Gestão de Usuários')}>
+      <Meta
+        avatar={<Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=11" />}
+        title="Gestão de Usuários"
+        description="Aqui você pode adicionar usuários ao sistema. Tome cuidado ao fornecer acesso aos dados da sua empresa, editar seus dados e mais."
+      />
+    </S.CardItem>
+  </S.Container>
+);
+
+export default Home;

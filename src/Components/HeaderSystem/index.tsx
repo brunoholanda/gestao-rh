@@ -10,7 +10,14 @@ const { Header } = Layout;
 export const HeaderSystem: React.FC = () => {
   const navigate = useNavigate();
   const { authData } = useAuth();
-  const userName = "Bruno Holanda"; 
+
+  // Extrai os dois primeiros nomes da empresa
+  const companyNameArray = authData?.companyName?.split(' ') || ['Empresa'];
+  const companyName = companyNameArray.slice(0, 2).join(' ');
+
+  // Extrai os dois primeiros nomes do usuário
+  const userNameArray = authData?.userName?.split(' ') || ['Usuário'];
+  const userName = userNameArray.slice(0, 2).join(' ');
 
   const handleLogout = () => {
     // Lógica de logout
@@ -32,7 +39,7 @@ export const HeaderSystem: React.FC = () => {
   return (
     <S.HeaderStyled>
       <S.HeaderContent>
-        <S.HeaderTitle>Nome da sua empresa</S.HeaderTitle>
+        <S.HeaderTitle>{companyName}</S.HeaderTitle>
         <Dropdown overlay={menu} placement="bottomRight">
           <S.UserSection>
             <Avatar size="large" icon={<UserOutlined />} />

@@ -2,14 +2,14 @@ import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Suspense, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-import Home from "./Pages/Home";
 import Loading from "./Components/Loading";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Authentication from "./Pages/Auth";
 import NotFound from "./Pages/NotFound";
 import PageBodySystem from "./Components/PageBodySystem";
 import { ReactElement } from "react";
-import Homes from "./Pages/Home2";
+import Home from "./Pages/Home";
+import Funcionarios from "./Pages/Funcionarios";
 
 function ScrollToTop() {
     const { pathname } = useLocation();
@@ -37,7 +37,7 @@ function ProtectedRoute({ element, allowedCompanyIds }: ProtectedRouteProps) {
 
     // @ts-expect-errorsdsds
     if (allowedCompanyIds && !allowedCompanyIds.includes(userCompanyId)) {
-        return <Navigate to="/painel" />;
+        return <Navigate to="/home" />;
     }
 
     return element;
@@ -53,7 +53,7 @@ function AppRoutes() {
                         <Route path="/" element={<Authentication />} />
                         <Route element={<PageBodySystem />}>
                             <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
-                            <Route path="/home-2" element={<ProtectedRoute element={<Homes />} />} />
+                            <Route path="/funcionarios" element={<ProtectedRoute element={<Funcionarios />} />} />
                             <Route path="*" element={<NotFound />} />
                         </Route>
                     </Routes>

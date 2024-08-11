@@ -1,43 +1,37 @@
 import styled from 'styled-components';
+import { Card } from 'antd';
 
-export const StyledFuncionariosPage = styled.div`
-    margin: 2rem;
+export const Container = styled.div`
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding: 20px;
+  gap: 20px;
+  margin-top: 4rem;
 
-    button {
-        margin-bottom: 1rem;
-    }
+  a {
+    text-decoration: none;
+  }
 `;
 
-export const StyledModalRow = styled.div`
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+export const CardItem = styled(Card)`
+  width: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 
-    .ant-form-item {
-        flex: 1;
-        margin-right: 1rem;
+  &:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(-4px);
+  }
 
-        &:last-child {
-            margin-right: 0;
-        }
-    }
+  .ant-card-meta-title {
+    font-weight: bold;
+    font-size: 16px;
+  }
 
-    @media screen and (max-width: 768px) {
-        flex-direction: column;
-
-        .ant-form-item {
-            width: 100%;
-            margin-right: 0;
-        }
-    }
+  .ant-card-meta-description {
+    color: #555;
+  }
 `;
-
-export const StyledModalColumn = styled.div`
-    display: flex;
-    flex-direction: column;
-
-    .ant-form-item {
-        width: 100%;
-    }
-`;
-

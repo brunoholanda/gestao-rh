@@ -16,6 +16,11 @@
   --azul-forte: #02075d;
 }
 
+.ant-layout-header {
+  height: 54px !important;
+  line-height: 39px !important;
+}
+
 
 body {
   margin: 0;

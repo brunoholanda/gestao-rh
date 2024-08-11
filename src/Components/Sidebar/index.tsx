@@ -4,6 +4,13 @@ import {
   LogoutOutlined,
   SettingOutlined,
   LockOutlined,
+  HomeOutlined,
+  UsergroupAddOutlined,
+  BankOutlined,
+  UserAddOutlined,
+  ClockCircleOutlined,
+  CalendarOutlined,
+  WarningOutlined,
 } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import { Layout, Menu, theme } from 'antd';
@@ -82,8 +89,13 @@ const Sidebar: React.FC = () => {
   const iconSize = 22;
 //@ts-ignore
   const items: MenuItem[] = [
-    getItem('Home', '1', <ScheduleOutlined style={{ fontSize: iconSize }} />, null, '/home'),
-    getItem('Ocorrencias', '2', <ScheduleOutlined style={{ fontSize: iconSize }} />, null, '/home'),
+    getItem('Home', '1', <HomeOutlined style={{ fontSize: iconSize }} />, null, '/home'),
+    getItem('Funcionários', '2', <UsergroupAddOutlined style={{ fontSize: iconSize }} />, null, '/funcionarios'),
+    getItem('Ocorrências', '3', <WarningOutlined style={{ fontSize: iconSize }} />, null, '/funcionarios'),
+    getItem('Ponto Eletrônico', '4', <ClockCircleOutlined style={{ fontSize: iconSize }} />, null, '/funcionarios'),
+    getItem('Controle de Férias', '5', <CalendarOutlined style={{ fontSize: iconSize }} />, null, '/funcionarios'),
+    getItem('Usuários', '6', <UserAddOutlined style={{ fontSize: iconSize }} />, null, '/funcionarios'),
+    getItem('Empresa', '7', <BankOutlined style={{ fontSize: iconSize }} />, null, '/funcionarios'),
 
     getItem('Sair +', 'logout', <LogoutOutlined style={{ fontSize: iconSize }} />, [
           // @ts-expect-errorsdsds

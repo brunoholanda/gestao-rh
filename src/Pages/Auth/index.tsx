@@ -35,7 +35,7 @@ const Authentication = () => {
       if (!access_token) {
         throw new Error('Token de acesso não recebido.');
       }
-  
+  //@ts-ignore
       updateAuthData({
         authToken: access_token,
         companyID: company_id || null,

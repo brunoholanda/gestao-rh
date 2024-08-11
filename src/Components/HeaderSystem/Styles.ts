@@ -27,6 +27,8 @@ export const FooterText = styled.p`
 export const HeaderStyled = styled(Layout.Header)`
   background-color: #001529;
   padding: 0;
+
+
 `;
 
 export const HeaderContent = styled.div`
@@ -37,7 +39,7 @@ export const HeaderContent = styled.div`
 `;
 
 export const HeaderTitle = styled.h1`
-  font-size: 20px;
+  font-size: 14px;
   color: #fff;
 `;
 
@@ -57,4 +59,6 @@ export const UserName = styled.span`
   color: #fff;
   margin-left: 8px;
   font-weight: bold;
+  font-size: 12px;
+
 `;
