@@ -21,7 +21,16 @@
   line-height: 39px !important;
 }
 
+.content-margin {
+  margin: 3rem 4rem;
+}
 
+.content-margin button {
+  margin: 1rem 0rem;
+}
+.ant-menu-item-selected {
+  background-color: #3f51b5 !important;
+}
 body {
   margin: 0;
   padding: 0;

@@ -20,10 +20,11 @@ export const CardItem = styled(Card)`
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   cursor: pointer;
+  transition: 0.5s ease;
 
   &:hover {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    transform: translateY(-4px);
+    transform: scale(1.005);
   }
 
   .ant-card-meta-title {

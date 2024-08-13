@@ -12,18 +12,6 @@ export const Content = styled.div`
   flex-direction: column;
 `;
 
-export const FooterDevContainer = styled.div`
-  text-align: center;
-  padding: 10px;
-  background: var(--preto-texto);
-`;
-
-export const FooterText = styled.p`
-  margin: 0;
-  font-size: 12px;
-  color: #888;
-`;
-
 export const HeaderStyled = styled(Layout.Header)`
   background-color: #001529;
   padding: 0;

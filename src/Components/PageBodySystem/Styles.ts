@@ -56,7 +56,7 @@ export const FooterDevContainer = styled.div`
     left: 0;
     bottom: 0;
     width: 100%;
-    background-color: #212322;
+    background-color: #001529;
     padding: .33rem;
     text-align: center;
 `;

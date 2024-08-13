@@ -2,6 +2,7 @@ import { createContext, useState, useEffect, useContext, ReactNode } from 'react
 import api from '../Components/api/api';
 
 interface AuthData {
+    userID: string | null; 
     userName: string | null;
     companyName: string | null;
     companyID: string | null;
@@ -52,12 +53,18 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             });
             if (response.status >= 200 && response.status < 300) {
                 const { company_id, user_type, company_name, user_name } = response.data;
+    
+                // Extraindo userID do token JWT
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                const userID = payload.sub;
+    
                 setAuthData((prev) => ({
                     ...prev,
+                    userID,  // Adicionar o userID aqui
                     companyID: company_id,
                     userType: user_type,
-                    companyName: company_name ? company_name.split(' ').slice(0, 2).join(' ') : null,  // Extrair os dois primeiros nomes
-                    userName: user_name ? user_name.split(' ').slice(0, 2).join(' ') : null,            // Extrair os dois primeiros nomes
+                    companyName: company_name ? company_name.split(' ').slice(0, 2).join(' ') : null,
+                    userName: user_name ? user_name.split(' ').slice(0, 2).join(' ') : null,
                 }));
             } else if (response.status === 401) {
                 logout();
@@ -68,6 +75,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             console.error(error.message);
         }
     };
+    
 
     const updateAuthData = (data: AuthData) => {
         setAuthData(data);

@@ -91,10 +91,10 @@ const Sidebar: React.FC = () => {
   const items: MenuItem[] = [
     getItem('Home', '1', <HomeOutlined style={{ fontSize: iconSize }} />, null, '/home'),
     getItem('Funcionários', '2', <UsergroupAddOutlined style={{ fontSize: iconSize }} />, null, '/funcionarios'),
-    getItem('Ocorrências', '3', <WarningOutlined style={{ fontSize: iconSize }} />, null, '/funcionarios'),
+    getItem('Ocorrências', '3', <WarningOutlined style={{ fontSize: iconSize }} />, null, '/ocorrencias'),
     getItem('Ponto Eletrônico', '4', <ClockCircleOutlined style={{ fontSize: iconSize }} />, null, '/funcionarios'),
     getItem('Controle de Férias', '5', <CalendarOutlined style={{ fontSize: iconSize }} />, null, '/funcionarios'),
-    getItem('Usuários', '6', <UserAddOutlined style={{ fontSize: iconSize }} />, null, '/funcionarios'),
+    getItem('Usuários', '6', <UserAddOutlined style={{ fontSize: iconSize }} />, null, '/usuarios'),
     getItem('Empresa', '7', <BankOutlined style={{ fontSize: iconSize }} />, null, '/funcionarios'),
 
     getItem('Sair +', 'logout', <LogoutOutlined style={{ fontSize: iconSize }} />, [

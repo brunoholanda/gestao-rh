@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { Button, Input, Modal, Form, DatePicker, Divider, Steps, notification, Select } from "antd";
+import { Button, Input, Modal, Form, DatePicker, Divider, Steps, notification, Select, Upload } from "antd";
 import axios from "axios";
 import api from "../../../Components/api/api";
 import InputMask from 'react-input-mask';
 import moment from 'moment';
 import { useAuth } from "../../../context/AuthContext";
 import { Funcionario } from "../../../types";
+import CameraCaptureModal from "../../../Components/Modals/CameraCaptureModal";
+import { CameraOutlined, UploadOutlined } from "@ant-design/icons";
 
 const { Step } = Steps;
 const { Option } = Select;
@@ -33,15 +35,18 @@ export default function CadastroFuncionarioModal({
     const [cpf, setCpf] = useState<string | undefined>(editingFuncionario?.cpf);
     const [telefone, setTelefone] = useState<string | undefined>(editingFuncionario?.telefone);
     const [estadoCivil, setEstadoCivil] = useState<string | undefined>(editingFuncionario?.estado_civil);
+    const [isCameraModalVisible, setIsCameraModalVisible] = useState<boolean>(false);
+    const [photoFile, setPhotoFile] = useState<File | null>(null);
+    const [fotoPath, setFotoPath] = useState<string | null>(editingFuncionario ? editingFuncionario.foto_path : null);
+
     const { authData } = useAuth();
-    
+
 
     const next = async () => {
         try {
             await form.validateFields();
             setCurrentStep(currentStep + 1);
         } catch (error) {
-            console.log('Validation failed:', error);
         }
     };
 
@@ -50,7 +55,7 @@ export default function CadastroFuncionarioModal({
     const handleSave = async () => {
         try {
             const values = await form.validateFields();
-            console.log("Valores do formulário:", values);
+            const uploadedPhotoPath = await uploadPhoto();
 
             const payload = {
                 nome,
@@ -60,17 +65,16 @@ export default function CadastroFuncionarioModal({
                 estado_civil: estadoCivil,
                 cargo: values.cargo,
                 formacao_academica: values.formacao_academica,
-                endereco: enderecoCompleto || `${values.endereco.rua}, ${values.endereco.cidade}, ${values.endereco.estado}, ${values.endereco.cep}`,
+                endereco: enderecoCompleto || `${values.endereco.rua}, ${values.endereco.numero}, ${values.endereco.referencia}, ${values.endereco.cidade}, ${values.endereco.estado}, ${values.endereco.cep}`,
+                foto_path: uploadedPhotoPath || fotoPath,
                 company_id: authData.companyID || '',
             };
 
-            console.log("Payload final:", payload);
 
             const method = editingFuncionario ? 'patch' : 'post';
             const url = editingFuncionario ? `/funcionarios/${editingFuncionario.id}` : '/funcionarios';
 
             const response = await api[method](url, payload);
-            console.log('Resposta da API:', response);
             //@ts-ignore
             onSave({ ...payload, id: editingFuncionario ? editingFuncionario.id : response.data.id });
             form.resetFields();
@@ -79,8 +83,6 @@ export default function CadastroFuncionarioModal({
 
         } catch (error) {
             console.error('Erro ao salvar funcionário:', error);
-            //@ts-ignore
-            console.log('Detalhes do erro:', error.response?.data);
             notification.error({
                 message: 'Erro ao salvar funcionário',
                 //@ts-ignore
@@ -95,40 +97,33 @@ export default function CadastroFuncionarioModal({
         } else {
             setDataNascimento(null);
         }
-        console.log("Data de nascimento formatada:", date ? date.format('YYYY-MM-DD') : 'null');
     };
 
     const handleNomeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNome(e.target.value);
-        console.log("Nome capturado:", e.target.value);
     };
 
     const handleCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const cleanedCpf = e.target.value.replace(/_/g, ''); // Remove qualquer "_"
+        const cleanedCpf = e.target.value.replace(/_/g, ''); 
         setCpf(cleanedCpf);
-        console.log("CPF capturado:", cleanedCpf);
     };
 
     const handleTelefoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const cleanedTelefone = e.target.value.replace(/_/g, ''); // Remove qualquer "_"
+        const cleanedTelefone = e.target.value.replace(/_/g, ''); 
         setTelefone(cleanedTelefone);
-        console.log("Telefone capturado:", cleanedTelefone);
     };
 
     const handleEstadoCivilChange = (value: string) => {
         setEstadoCivil(value);
-        console.log("Estado civil capturado:", value);
     };
 
     const handleCepChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        let cep = e.target.value.replace(/[^0-9]/g, ''); // Remove tudo que não for número
-        console.log("CEP digitado (limpo):", cep);
+        let cep = e.target.value.replace(/[^0-9]/g, ''); 
 
-        if (cep.length === 8) { // Verifica se o CEP tem 8 dígitos
+        if (cep.length === 8) { 
             try {
                 const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
                 const { logradouro, localidade, uf } = response.data;
-                console.log("Endereço retornado:", response.data);
                 const endereco = `${logradouro}, ${localidade}, ${uf}, ${cep}`;
                 setEnderecoCompleto(endereco);
                 form.setFieldsValue({
@@ -136,7 +131,7 @@ export default function CadastroFuncionarioModal({
                         rua: logradouro,
                         cidade: localidade,
                         estado: uf,
-                        cep: e.target.value, // Mantém o valor formatado do InputMask
+                        cep: e.target.value,
                         numero: form.getFieldValue(['endereco', 'numero']),
                         referencia: form.getFieldValue(['endereco', 'referencia']),
                     }
@@ -144,6 +139,28 @@ export default function CadastroFuncionarioModal({
             } catch (error) {
                 notification.error({ message: 'Erro ao buscar CEP', description: 'CEP não encontrado.' });
             }
+        }
+    };
+
+    const handleCapturePhoto = (file: File) => {
+        setPhotoFile(file);
+    };
+
+    const uploadPhoto = async () => {
+        if (photoFile) {
+            const formData = new FormData();
+            formData.append('file', photoFile);
+            const response = await api.post('/funcionarios/upload', formData);
+            return response.data.filePath;
+        }
+        return null;
+    };
+
+    const handleUploadChange = async (info: { file: { status?: any; response?: any; }; }) => {
+        if (info.file.status === 'done') {
+            const { response } = info.file;
+            setFotoPath(response.filePath);
+            notification.success({ message: 'Foto carregada com sucesso!' });
         }
     };
 
@@ -156,16 +173,16 @@ export default function CadastroFuncionarioModal({
                 form.resetFields();
                 setCurrentStep(0);
             }}
-            onOk={currentStep === 2 ? handleSave : next}
-            okText={currentStep === 2 ? "Salvar" : "Próximo"}
+            onOk={currentStep === 3 ? handleSave : next}
+            okText={currentStep === 3 ? "Salvar" : "Próximo"}
             cancelText={currentStep === 0 ? "Cancelar" : "Anterior"}
             width={600}
             footer={[
                 <Button key="back" onClick={currentStep === 0 ? onCancel : prev}>
                     {currentStep === 0 ? "Cancelar" : "Anterior"}
                 </Button>,
-                <Button key="submit" type="primary" onClick={currentStep === 2 ? handleSave : next}>
-                    {currentStep === 2 ? "Salvar" : "Próximo"}
+                <Button key="submit" type="primary" onClick={currentStep === 3 ? handleSave : next}>
+                    {currentStep === 3 ? "Salvar" : "Próximo"}
                 </Button>,
             ]}
         >
@@ -303,8 +320,36 @@ export default function CadastroFuncionarioModal({
                         </Form.Item>
                     </>
                 )}
+
+                {currentStep === 3 && (
+                    <>
+                        <Form.Item label="Foto (Opcional)">
+                            <Upload
+                                name="file"
+                                action="/api/v2/funcionarios/upload"
+                                listType="picture"
+                                onChange={handleUploadChange}
+                                maxCount={1}
+                            >
+                                <Button icon={<UploadOutlined />}>Carregar Foto</Button>
+                            </Upload>
+                            <Button
+                                icon={<CameraOutlined />}
+                                onClick={() => setIsCameraModalVisible(true)}
+                                style={{ marginTop: 16 }}
+                            >
+                                Usar Câmera
+                            </Button>
+                        </Form.Item>
+                    </>
+                )}
             </Form>
             <Divider />
+            <CameraCaptureModal
+                isOpenCameraModal={isCameraModalVisible}
+                onClose={() => setIsCameraModalVisible(false)}
+                onCapture={handleCapturePhoto}
+            />
         </Modal>
     );
 }
