@@ -93,7 +93,7 @@ const Sidebar: React.FC = () => {
     getItem('Funcionários', '2', <UsergroupAddOutlined style={{ fontSize: iconSize }} />, null, '/funcionarios'),
     getItem('Ocorrências', '3', <WarningOutlined style={{ fontSize: iconSize }} />, null, '/ocorrencias'),
     getItem('Ponto Eletrônico', '4', <ClockCircleOutlined style={{ fontSize: iconSize }} />, null, '/funcionarios'),
-    getItem('Controle de Férias', '5', <CalendarOutlined style={{ fontSize: iconSize }} />, null, '/funcionarios'),
+    getItem('Controle de Férias', '5', <CalendarOutlined style={{ fontSize: iconSize }} />, null, '/ferias'),
     getItem('Usuários', '6', <UserAddOutlined style={{ fontSize: iconSize }} />, null, '/usuarios'),
     getItem('Empresa', '7', <BankOutlined style={{ fontSize: iconSize }} />, null, '/funcionarios'),
 
